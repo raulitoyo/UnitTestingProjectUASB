@@ -104,15 +104,12 @@ public class Analyzer {
 
 		for (Word palabra : listaWord) {
 			String findPalabra = palabra.getText();
-
 			for (Sentence sentence : sentences) {
 				cadenaLinea = sentence.getText().toLowerCase();
-
 				StringTokenizer st = new StringTokenizer(cadenaLinea);
 
 				while (st.hasMoreTokens()) 	{
 					cadenaPalabra = st.nextToken();
-
 					if (findPalabra.equals(cadenaPalabra)) {
 						palabra.increaseTotal(sentence.getScore());
 
@@ -129,7 +126,16 @@ public class Analyzer {
 	 * Implement this method in Part 3
 	 */
 	public static Map<String, Double> calculateScores(Set<Word> words) {
-		return null;
+		Map<String, Double> map = new HashMap<String, Double>();
+
+		for (Word palabra: words) {
+			double score = palabra.calculateScore();
+			map.put(palabra.getText(), score);
+
+			System.out.println("Map: " + palabra.getText() + ", " + score);
+		}
+
+		return map;
 	}
 
 }

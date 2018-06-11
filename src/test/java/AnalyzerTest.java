@@ -2,10 +2,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class AnalyzerTest {
     Analyzer reader = new Analyzer();
@@ -31,7 +28,7 @@ public class AnalyzerTest {
     }
 
     @Test
-    public void todasPalabras_correcto_archivo() {
+    public void todasPalabras_cantidad_palabras() {
         List<Sentence> listaSentence = new ArrayList<Sentence>();
         Set<Word> listaWord = new TreeSet<Word>();
 
@@ -81,5 +78,26 @@ public class AnalyzerTest {
         Assert.assertEquals(4, acumulativo);
     }
 
+    @Test
+    public void calcularScore_sentimiento_palabraFun() {
+        List<Sentence> listaSentence = new ArrayList<Sentence>();
+        Set<Word> listaWord = new TreeSet<Word>();
+        Map<String, Double> map = new HashMap<String, Double>();
 
+        listaSentence = reader.readFile("archivo.txt");
+        listaWord = reader.allWords(listaSentence);
+
+        String palabraBuscar = "fun";
+
+        map = Analyzer.calculateScores(listaWord);
+
+        double sentimiento = 0;
+        for (Map.Entry<String, Double> entry : map.entrySet()) {
+            if (palabraBuscar.equals(entry.getKey())) {
+                sentimiento = entry.getValue();
+            }
+        }
+
+        Assert.assertEquals(0.8, sentimiento, 0.001);
+    }
 }
