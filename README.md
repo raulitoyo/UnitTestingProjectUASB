@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/raulitoyo/UnitTestingProjectUASB.svg?branch=master)]
+
 # UnitTestingProjectUASB
 Trabajo Final - Pruebas Unitarias
 
