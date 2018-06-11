@@ -6,15 +6,15 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class Analyzer {
+	public static String cadenaLinea;
+	public static String cadenaPalabra;
+
 	/*
 	 * Implement this method in Part 1
 	 */
 	public static List<Sentence> readFile(String filename) {
-		Sentence sentence = new Sentence(0, null);
+		//Sentence sentence = new Sentence(0, null);
 		List<Sentence> listaSentence = new ArrayList<Sentence>();
-
-		String cadenaLinea;
-		String cadenaPalabra;
 
 		List<String> list = new ArrayList<>();
 		try {
@@ -44,9 +44,9 @@ public class Analyzer {
 									if (espacio.charAt(0) == ' ') {
 										System.out.println("Linea valida");
 
-										sentence.score = score;
-										sentence.text = cadenaLinea.substring(cadenaPalabra.length() + 1, cadenaLinea.length()).toUpperCase();
+										String text = cadenaLinea.substring(cadenaPalabra.length() + 1, cadenaLinea.length()).toUpperCase();
 
+										Sentence sentence = new Sentence(score, text);
 										listaSentence.add(sentence);
 									} else {
 										System.out.println("Linea no valida");
@@ -61,8 +61,6 @@ public class Analyzer {
 							break;
 						}
 					}
-					System.out.println(sentence.score);
-					System.out.println(sentence.text);
 					System.out.println("---------------------------------------");
 				}
 			}
@@ -78,18 +76,60 @@ public class Analyzer {
 	 * Implement this method in Part 2
 	 */
 	public static Set<Word> allWords(List<Sentence> sentences) {
+		Set<Word> listaWord = new TreeSet<Word>();
 
-		return null;
+		if (sentences != null) {
+			for (Sentence sentence : sentences) {
+				System.out.println("---------------------* palabras *---------------------------------------");
+				System.out.println(sentence.getScore() +  " " + sentence.getText().toLowerCase());
 
+				cadenaLinea = sentence.getText().toLowerCase();
+
+				int numTokens = 0;
+				StringTokenizer st = new StringTokenizer(cadenaLinea);
+
+				while (st.hasMoreTokens()) 	{
+					cadenaPalabra = st.nextToken();
+					numTokens++;
+
+					Word palabra = new Word(cadenaPalabra);
+					listaWord.add(palabra);
+					System.out.println(numTokens + " --- " + cadenaPalabra);
+				}
+			}
+		} else {
+			System.out.println("Sentence vacio");
+		}
+
+
+		for (Word palabra : listaWord) {
+			String findPalabra = palabra.getText();
+
+			for (Sentence sentence : sentences) {
+				cadenaLinea = sentence.getText().toLowerCase();
+
+				StringTokenizer st = new StringTokenizer(cadenaLinea);
+
+				while (st.hasMoreTokens()) 	{
+					cadenaPalabra = st.nextToken();
+
+					if (findPalabra.equals(cadenaPalabra)) {
+						palabra.increaseTotal(sentence.getScore());
+
+						System.out.println(palabra.getText() + ", " + palabra.getTotal());
+					}
+				}
+			}
+		}
+
+		return listaWord;
 	}
 
 	/*
 	 * Implement this method in Part 3
 	 */
 	public static Map<String, Double> calculateScores(Set<Word> words) {
-
 		return null;
-
 	}
 
 }
