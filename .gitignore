@@ -1,3 +1,6 @@
 gradle
 .git
 .gradle
+.idea
+out
+.gitignore
