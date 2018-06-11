@@ -11,6 +11,7 @@ public class Analyzer {
 	 */
 	public static List<Sentence> readFile(String filename) {
 		Sentence sentence = new Sentence(0, null);
+		List<Sentence> listaSentence = new ArrayList<Sentence>();
 
 		String cadenaLinea;
 		String cadenaPalabra;
@@ -45,6 +46,8 @@ public class Analyzer {
 
 										sentence.score = score;
 										sentence.text = cadenaLinea.substring(cadenaPalabra.length() + 1, cadenaLinea.length()).toUpperCase();
+
+										listaSentence.add(sentence);
 									} else {
 										System.out.println("Linea no valida");
 									}
@@ -58,15 +61,12 @@ public class Analyzer {
 							break;
 						}
 					}
-					System.out.println("---------------------------------------");
 					System.out.println(sentence.score);
 					System.out.println(sentence.text);
+					System.out.println("---------------------------------------");
 				}
-				
-				return (List<Sentence>) sentence;
-			} else {
-				return null;
 			}
+			return listaSentence;
 
 		} catch (IOException e) {
 			System.out.println("Wrong file name. File " + filename + " can not be open.");

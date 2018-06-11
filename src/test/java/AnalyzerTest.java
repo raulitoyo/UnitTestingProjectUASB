@@ -1,34 +1,30 @@
 import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.AfterClass;
 import org.junit.Test;
-import sun.misc.IOUtils;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class AnalyzerTest {
     Analyzer reader = new Analyzer();
-    String lineasArchivo = "1 Web development";
 
     @Test
-    public void leerArchivoCorrecto() {
-        List<String> strings = Arrays.asList(lineasArchivo);
+    public void leerArchivo_correcto_archivo() {
+        List<Sentence> listaSentence = new ArrayList<Sentence>();
+        listaSentence = reader.readFile("archivo.txt");
 
-        Assert.assertTrue(reader.readFile("archivo.txt").equals(strings));
+        Assert.assertFalse(listaSentence.isEmpty());
     }
 
     @Test
-    public void leerArchivoVacio() {
-         Assert.assertNull(reader.readFile("archivoVacio.txt"));
+    public void leerArchivo_vacio_archivo() {
+        List<Sentence> listaSentence = reader.readFile("archivoVacio.txt");
+
+        Assert.assertEquals("", 0, listaSentence.size());
     }
 
     @Test
-    public void leerArchivoNoExiste() throws IOException {
+    public void leerArchivo_noExiste_archivo() throws IOException {
          Assert.assertNull(reader.readFile("archivoNoExiste.txt"));
     }
 }
