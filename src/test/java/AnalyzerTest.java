@@ -1,11 +1,19 @@
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import org.junit.Assert;
 import org.junit.Test;
+import org.testng.annotations.BeforeMethod;
 
 import java.io.IOException;
 import java.util.*;
 
 public class AnalyzerTest {
-    Analyzer reader = new Analyzer();
+    private Analyzer reader;
+    static int TOTAL_PALABRAS_EN_ARCHIVO_TXT = 40;
+
+    @BeforeMethod
+    public void beforeMethod() {
+        Analyzer reader = new Analyzer();
+    }
 
     @Test
     public void leerArchivo_correcto_archivo() {
@@ -28,23 +36,15 @@ public class AnalyzerTest {
     }
 
     @Test
-    public void todasPalabras_cantidad_palabras() {
-        List<Sentence> listaSentence = new ArrayList<Sentence>();
-        Set<Word> listaWord = new TreeSet<Word>();
+    public void todasPalabras_totalPalabras_enArchivo() {
+        Set<Word> listaWord = todasPalabras();
 
-        listaSentence = reader.readFile("archivo.txt");
-        listaWord = reader.allWords(listaSentence);
-
-        Assert.assertEquals(40, listaWord.size());
+        Assert.assertEquals(TOTAL_PALABRAS_EN_ARCHIVO_TXT, listaWord.size());
     }
 
     @Test
     public void todasPalabras_buscar_palabraIt() {
-        List<Sentence> listaSentence = new ArrayList<Sentence>();
-        Set<Word> listaWord = new TreeSet<Word>();
-
-        listaSentence = reader.readFile("archivo.txt");
-        listaWord = reader.allWords(listaSentence);
+        Set<Word> listaWord = todasPalabras();
 
         String palabraBuscar = "it";
 
@@ -60,11 +60,7 @@ public class AnalyzerTest {
 
     @Test
     public void todasPalabras_acumulativo_palabraNot() {
-        List<Sentence> listaSentence = new ArrayList<Sentence>();
-        Set<Word> listaWord = new TreeSet<Word>();
-
-        listaSentence = reader.readFile("archivo.txt");
-        listaWord = reader.allWords(listaSentence);
+        Set<Word> listaWord = todasPalabras();
 
         String palabraBuscar = "not";
 
@@ -80,12 +76,9 @@ public class AnalyzerTest {
 
     @Test
     public void calcularScore_sentimiento_palabraFun() {
-        List<Sentence> listaSentence = new ArrayList<Sentence>();
-        Set<Word> listaWord = new TreeSet<Word>();
-        Map<String, Double> map = new HashMap<String, Double>();
+        Set<Word> listaWord = todasPalabras();
 
-        listaSentence = reader.readFile("archivo.txt");
-        listaWord = reader.allWords(listaSentence);
+        Map<String, Double> map = new HashMap<String, Double>();
 
         String palabraBuscar = "fun";
 
@@ -99,5 +92,15 @@ public class AnalyzerTest {
         }
 
         Assert.assertEquals(0.8, sentimiento, 0.001);
+    }
+
+    private Set<Word> todasPalabras() {
+        List<Sentence> listaSentence = new ArrayList<Sentence>();
+        Set<Word> listaWord = new TreeSet<Word>();
+
+        listaSentence = reader.readFile("archivo.txt");
+        listaWord = reader.allWords(listaSentence);
+
+        return listaWord;
     }
 }
